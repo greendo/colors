@@ -7,11 +7,15 @@ import 'package:random_colors/bloc/color_cubit.dart';
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations? strings = AppLocalizations.of(context);
+    if (strings == null) throw Exception("Localized messages are null");
+    const textContrast = 0.5;
+
     return BlocBuilder<ColorCubit, Color>(
       builder: (context, computedBackgroundColor) => Scaffold(
         backgroundColor: computedBackgroundColor,
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.colorsText),
+          title: Text(strings.colorsText),
         ),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -20,9 +24,10 @@ class MainPage extends StatelessWidget {
           },
           child: Center(
             child: Text(
-              AppLocalizations.of(context)!.centerText,
+              strings.centerText,
               style: Theme.of(context).textTheme.headline4?.copyWith(
-                  color: computedBackgroundColor.computeLuminance() < 0.5
+                  color: computedBackgroundColor.
+                  computeLuminance() < textContrast
                       ? Colors.white
                       : Colors.black,
               ),
